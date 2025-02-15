@@ -7,11 +7,11 @@ A Javascript library for creation and update of DOM elements via component funct
 
 Taking a few of the things I think people like about FRP libraries and removing others. Less concerned with managing a functional reactive component state isolated from the DOM, and more with responding to a separate model/world state. Some of these choices make more sense from the point of view of games, simulations, and long lived state, rather than more transactional websites with fresh queries per page.
 
-hair.js presupposes an app state or model, that is maintained and updated over the life of the program in response to user actions or network driven updates. The developer creates composable functions that take the current state of the app, or a part of that state, and recursively produce "component specifications" describing the "view" produced for that state. The main functions for producing this view specification allow the developer to mix text, HTML elements, and child elements including functions, arrays, or explicitly composed sub-components, allowing a fluid and natural shape to the view functions. A render pass then creates or updates DOM elements to match that specification, hooking DOM listeners and other callbacks directly to the rendered elements. 
+hair-mini.js presupposes an app state or model, that is maintained and updated over the life of the program in response to user actions or network driven updates. The developer creates composable functions that take the current state of the app, or a part of that state, and recursively produce "component specifications" describing the "view" produced for that state. The main functions for producing this view specification allow the developer to mix text, HTML elements, and child elements including functions, arrays, or explicitly composed sub-components, allowing a fluid and natural shape to the view functions. A render pass then creates or updates DOM elements to match that specification, hooking DOM listeners and other callbacks directly to the rendered elements. 
 
 UI state that is more transient than the underlying app state or model should remain the DOM's business where possible, and a "render context" representing the instantiation of a component specifications into the DOM provides a scoped object to handle the live connection between the view specifications and DOM.
 
-hair.js is a single file module, that can be included in a project without any required build steps.
+hair-mini.js is a single file module, that can be included in a project without any required build steps.
 
 ### Goals
 
@@ -19,7 +19,7 @@ hair.js is a single file module, that can be included in a project without any r
  * The same component code can create or update the DOM
  * Direct access to the dom elements is supported by callbacks
  * Update via re-render of components OR via incremental change to DOM elements (ie. perhaps depending whether it is model state that has updated, or UI state)
- * Maintain a single file, minimal, version of hair.js focused only on HTML render
+ * Maintain a single file, minimal, version of hair-mini.js focused only on HTML render
 
 ### Trade offs / non-goals
 
@@ -51,7 +51,7 @@ See the included example TODO list to see examples of all of these in use.
 Snippet:
 
 	// bring the hair library in accessed as h.*
-	import * as h from './js/hair.js';
+	import * as h from './js/hair-mini.js';
 
 	export default function app(model) {
 		return [

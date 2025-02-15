@@ -1,4 +1,4 @@
-// hair.js - MIT license, copyright 2024 Samuel Baird
+// hair-mini.js - MIT license, copyright 2024 Samuel Baird
 // ====================================================================================
 // The code is split into three main sections:
 //  * component specifications, ie. describing the view to be rendered in a composable way
@@ -361,14 +361,13 @@ class RenderContext {
 		}
 
 		// track the intended order of elements as they are created or reused
-		if (parentOrder) {
-			this.parentOrder = parentOrder;
-		} else {
-			this.parentOrder = new Map();
-			// we need to start this component off in its current position
+		if (!parentOrder) {
+			parentOrder = new Map();
+			// we need to start this component off in its current position of its first element
 			for (const attachment of this.attachments) {
 				if ((attachment instanceof ElementAttachment) && (attachment.element.parentElement == this.parentDOMElement)) {
-					this.parentOrder.set(this.parentDOMElement, attachment.element);
+					parentOrder.set(this.parentDOMElement, attachment.element);
+					break;
 				}
 			}
 		}
@@ -378,7 +377,7 @@ class RenderContext {
 		this.updateIsRequested = false;
 
 		// begin middle and end of render
-		const renderPhase = new RenderPhase(this, this.parentOrder);
+		const renderPhase = new RenderPhase(this, parentOrder);
 		this.#apply(this.parentDOMElement, state, this.component, renderPhase);
 		this.commit(renderPhase);
 
@@ -942,11 +941,6 @@ export function onAnyFrame (action, owner) {
 	delayedAction.repeat = 0;
 	delayedAction.doesNotRequestFrames = true;
 	return delayedAction;
-}
-
-export function staggered (action, owner, waitPeriod = 0.25) {
-	cancel(owner);
-	delay(waitPeriod, action, owner);
 }
 
 export function cancel (owner) {

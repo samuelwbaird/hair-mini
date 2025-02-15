@@ -1,8 +1,8 @@
 // reference the hair library to access the provided functions to generate elements
-import * as h from '../../hair.js';
+import * as h from '../../hair-mini.js';
 
 /** top level view, render the app as a title, list, and "add new" component */
-export default function app (model) {
+export default function appView (model) {
 	return [
 		h.h1(model.name),
 		h.div([

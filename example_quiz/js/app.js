@@ -1,5 +1,5 @@
 // reference the hair library to hook into the signal/watch mechanism
-import * as hair from '../../hair.js';
+import * as hair from '../../hair-mini.js';
 
 import * as model from './model.js';
 import * as view from './view.js';

@@ -1,5 +1,5 @@
 // reference the hair library to access the provided functions to generate elements
-import * as h from '../../hair.js';
+import * as h from '../../hair-mini.js';
 
 // -- main menu ------------------------------------------
 
