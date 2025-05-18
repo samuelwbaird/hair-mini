@@ -633,7 +633,7 @@ class RenderPhase {
 		search: while (i < this.priorAttachments.length) {
 			const attachment = this.priorAttachments[i];
 			if (attachment instanceof attachmentType) {
-				for (let j = 0; j < keys.length; j++) {
+				for (let j = 0; j < Math.max(attachment.keys.length, keys.length); j++) {
 					if (keys[j] != attachment.keys[j]) {
 						i++;
 						continue search;
@@ -959,6 +959,40 @@ export function cancel (owner) {
 	}
 }
 
+// async/await
+
+
+// -- async / wait ---------------------------------------
+// await for a timer or condition to be true using promises
+
+// use this in async functions, eg. await hair.wait(10);
+// or wait until a condition is true (checking every frame)
+// eg. await hair.wait(() => { button.clicked == true; });
+export function wait (timeOrCondition, owner, conditionCheckPeriod = 0) {
+	return new Promise((resume) => {
+		if (timeOrCondition == null) {
+			// wait one frame by default
+			onNextFrame(resume, owner);
+		} else if (typeof timeOrCondition == 'function') {
+			let delayedAction = timer(conditionCheckPeriod, () => {
+				if (timeOrCondition()) {
+					delayedAction.cancel();
+					resume();
+				}
+			}, owner);			
+		} else {
+			delay(timeOrCondition, resume, owner);
+		}
+	});	
+}
+
+// use this somewhat symbolically in async function, eg. await core.forever();
+export function forever () {
+	return new Promise((resume) => {
+		// you can (not) resume
+	});
+}
+
 const READY_TIME = 50;			// how many ms ahead of the requested time slot do we switch from setTimeout to requestAnimationFrame
 let frameIsRequested = false;	// is an animationFrameRequest for the next frame already in play?
 let longDelayTimeout = false;	// is a timeout for delayed animation frames already in play?
@@ -1059,6 +1093,10 @@ class DelayedAction {
 		// override this with another number to control how timer events are sorted within the same timeslice
 		this.phase = 0;
 	}
+	
+	cancel () {
+		cancel(this);
+	}
 }
 
 
@@ -1084,7 +1122,7 @@ export function isObjectDisposed (obj) {
 // -------------------------------------------------------------------------------
 
 // log statistics on how many dom elements are being either created, or moved (since last log)
-const MONITOR_DOM_UPDATES = false;
+const MONITOR_DOM_UPDATES = true;
 let CREATE_COUNT = 0;
 let MOVE_COUNT = 0;
 let REQUEST_ANIMATION_FRAME_COUNT = 0;

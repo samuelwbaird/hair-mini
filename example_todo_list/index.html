@@ -44,9 +44,17 @@
 	
 	// this is an artifical example using a timer (hair's shared central timer) to pretend new data has come in from the network
 	// triggering an update to the view outside of user interaction
-	hair.delay(10, () => {
+	// hair.delay(10, () => {
+	// 	model.addItem('Automated reminder: feed the cat');
+	// });
+	
+	async function delayedUpdates () {
+		await hair.wait(5);
 		model.addItem('Automated reminder: feed the cat');
-	});
+		await hair.wait(() => { return Math.random() < 0.001; } );
+		model.addItem('Automated reminder: feed the cat again');
+	}
+	delayedUpdates();	
 	
 	// other updates could be requested directly using the context object that as created
 	// onNetworkState = () => { context.update(model); };
