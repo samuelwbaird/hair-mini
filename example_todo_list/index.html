@@ -23,7 +23,7 @@
 	model.addItem('Eat beans');
 	model.addItem('Drink coffee');
 	
-	// stress test with a long list
+	// // stress test with a long list
 	// for (let i = 1; i <= 1000; i++) {
 	// 	model.addItem('Stress Test Item ' + i);
 	// }
@@ -49,12 +49,14 @@
 	// });
 	
 	async function delayedUpdates () {
+		// seconds delay in an async call
 		await hair.wait(5);
 		model.addItem('Automated reminder: feed the cat');
+		// wait for an arbitrary condition to be true
 		await hair.wait(() => { return Math.random() < 0.001; } );
 		model.addItem('Automated reminder: feed the cat again');
 	}
-	delayedUpdates();	
+	delayedUpdates();
 	
 	// other updates could be requested directly using the context object that as created
 	// onNetworkState = () => { context.update(model); };
