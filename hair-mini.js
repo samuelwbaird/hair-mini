@@ -794,18 +794,20 @@ function applyClassList(context, element, key, value) {
 	if (!Array.isArray(value)) {
 		value = [value];
 	}
-	const newNames = new Set();
+	
+	// first remove any class names that aren't in the new list
+	for (const className of element.classList) {
+		if (!value.includes(className)) {
+			element.classList.remove(className);
+		}
+	}
+
+	// then add any class names not currently included
 	for (const className of value) {
 		if (className != null && className != '' && className != false) {
-			newNames.add(className);
 			if (!element.classList.contains(className)) {
 				element.classList.add(className);
 			}
-		}
-	}
-	for (const className of element.classList) {
-		if (!newNames.has(className)) {
-			element.classList.remove(value);
 		}
 	}
 }
