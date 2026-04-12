@@ -777,7 +777,7 @@ class ContextListenerAttachment extends RenderAttachment {
 const propertyHandlers = {
 	context_id: applyContextIDProperty,
 	class: applyClassList,
-	style: applyMergedProperties,
+	style: applyUpdatedStyles,
 	value: applyValueToInput,
 }
 
@@ -810,11 +810,24 @@ function applyClassList(context, element, key, value) {
 	}
 }
 
-function applyMergedProperties(context, element, key, value) {
+// merge styles into an element.styles object, remove any styles previously applied by hair
+const previouslyApplied = new WeakMap();
+function applyUpdatedStyles(context, element, key, value) {
 	const mergeInto = element[key];
-	for (const [k, v] of Object.entries(value)) {
+	const previous = previouslyApplied.get(element);
+	const values = Object.entries(value);
+	// remove previous and apply new
+	if (previous) {
+		for (const [k, v] of previous) {
+			if (!(k in values)) {
+				mergeInto[k] = null;
+			}
+		}
+	}
+	for (const [k, v] of values) {
 		mergeInto[k] = v;
 	}
+	previouslyApplied.set(element, values);
 }
 
 function applyValueToInput(context, element, key, value) {

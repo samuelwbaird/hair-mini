@@ -32,7 +32,7 @@ function sortButton (model) {
 	// sort button to test out ordering of re-used elements
 	return [
 		h.button('Sort Items', { class: ['btn', 'btn-sort'] }, h.listen('click', () => { model.sortItems(); })),
-		h.div({ style: { display: 'inline', marginRight: '10px' }}),
+		spacer(10),
 		h.span('(alphabetical sort, with completed items last)'),
 	];
 }
@@ -47,9 +47,9 @@ function displayItem (model, item) {
 				}
 			}),
 		]),
-		h.div({ style: { display: 'inline', marginRight: '5px' }}),
+		spacer(5),
 		h.span(item.text, { class: 'txt-todo', style: { textDecoration: (item.completed ? 'line-through' : '') }}),
-		h.div({ style: { display: 'inline', marginRight: '5px' }}),
+		spacer(5),
 		h.button('Delete', { class: ['btn', 'btn-delete'] }, h.listen('click', () => { model.removeItem(item); })),
 	]);
 }
@@ -58,11 +58,15 @@ function displayItem (model, item) {
 function addItem (model) {
 	return h.div([
 		h.input({ context_id: 'txt_input' }),
-		h.div({ style: { display: 'inline', marginRight: '10px' }}),
+		spacer(10),
 		h.button('Add', { class: ['btn', 'btn-add'] }, h.listen('click', (context, element) => {
 			// use a reference to a another element within this same context, using the special context_id property
 			model.addItem(context.txt_input.value);
 			context.txt_input.value = '';
 		})),
 	]);
+}
+
+function spacer (size) {
+	return h.div({ style: { display: 'inline', marginRight: size + 'px' }});
 }
